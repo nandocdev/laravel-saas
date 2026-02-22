@@ -1,11 +1,18 @@
 @import 'tailwindcss';
+/* Preline UI */
+@import "../../node_modules/preline/variants.css";
+/* Plugins */
+@plugin "@tailwindcss/forms";
+
 @import '../../vendor/livewire/flux/dist/flux.css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+@source "../../node_modules/preline/dist/*.js";
 
+@custom-variant hover (&:hover);
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -37,6 +44,10 @@
 }
 
 @layer base {
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+        cursor: pointer;
+    }
 
     *,
     ::after,
