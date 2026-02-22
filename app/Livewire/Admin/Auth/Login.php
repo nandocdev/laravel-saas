@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Livewire\Admin\Auth;
+
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
+
+#[Layout('layouts.auth')]
+class Login extends Component
+{
+   #[Validate('required|email')]
+   public string $email = '';
+
+   #[Validate('required|min:6')]
+   public string $password = '';
+
+   public bool $remember = false;
+
+   public function authenticate(): void
+   {
+      $this->validate();
+
+      if (! Auth::guard('admin')->attempt(
+         ['email' => $this->email, 'password' => $this->password],
+         $this->remember
+      )) {
+         $this->addError('email', __('These credentials do not match our records.'));
+         return;
+      }
+
+      session()->regenerate();
+
+      $this->redirectIntended(route('admin.dashboard'), navigate: true);
+   }
+
+   public function render()
+   {
+      return view('livewire.admin.auth.login')
+         ->title('Admin Login — ' . config('app.name'));
+   }
+}
