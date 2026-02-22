@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Central\Models\Subscription;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -11,6 +12,11 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 {
    use HasDatabase, HasDomains;
 
+   public function subscriptions()
+   {
+      return $this->hasMany(Subscription::class, 'tenant_id', 'id');
+   }
+
    /**
     * Determine if the tenant holds a valid, active subscription.
     *
@@ -18,8 +24,12 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     */
    public function subscribed(): bool
    {
-      // TODO: Replace with real subscription logic using Central database
-      // e.g., checking plans/subscriptions relationship.
-      return true;
+      $subscription = $this->subscriptions()->latest('created_at')->first();
+
+      if (!$subscription) {
+         return false;
+      }
+
+      return $subscription->isActive();
    }
 }
