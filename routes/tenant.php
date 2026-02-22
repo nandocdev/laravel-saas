@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Central\Http\Middleware\EnsureTenantIsSubscribed;
+use App\Tenant\Controllers\Auth\LoginController;
+use App\Tenant\Controllers\Auth\RegisterController;
+use App\Tenant\Controllers\TenantDashboardController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -11,10 +15,9 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 | Tenant Routes
 |--------------------------------------------------------------------------
 |
-| Here you can register the tenant routes for your application.
-| These routes are loaded by the TenantRouteServiceProvider.
-|
-| Feel free to customize them however you want. Good luck!
+| These routes are loaded by the TenancyServiceProvider within a group
+| that applies the tenancy initialization middleware. All routes here
+| operate within the tenant's isolated database context.
 |
 */
 
@@ -23,7 +26,28 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
+
+    // ─── Public Landing ──────────────────────────────────────────
     Route::get('/', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+        return redirect()->route('tenant.login');
+    })->name('tenant.home');
+
+    // ─── Guest Auth Routes ───────────────────────────────────────
+    Route::middleware('guest')->group(function () {
+        Route::get('login', [LoginController::class, 'showLoginForm'])->name('tenant.login');
+        Route::post('login', [LoginController::class, 'login']);
+
+        Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('tenant.register');
+        Route::post('register', [RegisterController::class, 'register']);
+    });
+
+    // ─── Authenticated + Subscribed Routes ───────────────────────
+    Route::middleware(['auth', EnsureTenantIsSubscribed::class])->group(function () {
+
+        // Dashboard
+        Route::get('dashboard', [TenantDashboardController::class, 'index'])->name('tenant.dashboard');
+
+        // Logout
+        Route::post('logout', [LoginController::class, 'logout'])->name('tenant.logout');
     });
 });
