@@ -1,6 +1,9 @@
 @import 'tailwindcss';
-/* Preline UI */
+
+/* Preline UI: variants + default theme (semantic tokens + @theme inline mapping) */
 @import "../../node_modules/preline/variants.css";
+@import "../../node_modules/preline/css/themes/theme.css";
+
 /* Plugins */
 @plugin "@tailwindcss/forms";
 
@@ -15,26 +18,9 @@
 @custom-variant hover (&:hover);
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
-
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
-}
-
+/* ============================================================
+   Flux UI compatibility overrides
+   ============================================================ */
 @layer theme {
     .dark {
         --color-accent: var(--color-white);
@@ -44,6 +30,7 @@
 }
 
 @layer base {
+
     button:not(:disabled),
     [role="button"]:not(:disabled) {
         cursor: pointer;
@@ -58,12 +45,13 @@
     }
 }
 
+/* Flux field compatibility */
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
@@ -72,6 +60,54 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+/* ============================================================
+   Landing page visual enhancements
+   ============================================================ */
+
+/* Gradient text for hero headline */
+.text-gradient-primary {
+    background: linear-gradient(135deg, var(--primary), var(--color-primary-400));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Hero grid background pattern */
+.hero-grid-bg {
+    background-image:
+        linear-gradient(var(--border-line-1) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-line-1) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+/* Fade-in-up animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-animate {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.hero-animate-delay-1 {
+    animation-delay: 0.1s;
+    opacity: 0;
+}
+
+.hero-animate-delay-2 {
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+.hero-animate-delay-3 {
+    animation-delay: 0.35s;
+    opacity: 0;
+}
