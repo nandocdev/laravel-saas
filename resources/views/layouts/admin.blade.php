@@ -27,7 +27,7 @@
                         {{ __('Plans') }}
                     </flux:sidebar.item>
 
-                    <flux:sidebar.item icon="building-2" :href="route('admin.tenants.index')" :current="request()->routeIs('admin.tenants.*')" wire:navigate>
+                    <flux:sidebar.item icon="building-office" :href="route('admin.tenants.index')" :current="request()->routeIs('admin.tenants.*')" wire:navigate>
                         {{ __('Tenants') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
