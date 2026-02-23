@@ -28,9 +28,7 @@ Route::middleware([
 ])->group(function () {
 
     // ─── Public Landing ──────────────────────────────────────────
-    Route::get('/', function () {
-        return redirect()->route('tenant.login');
-    })->name('tenant.home');
+    Route::get('/', \App\Livewire\Tenant\PublicLanding::class)->name('tenant.home');
 
     // ─── Guest Auth Routes ───────────────────────────────────────
     Route::middleware('guest')->group(function () {
@@ -46,6 +44,9 @@ Route::middleware([
 
         // Dashboard
         Route::get('dashboard', [TenantDashboardController::class, 'index'])->name('tenant.dashboard');
+
+        // Settings
+        Route::get('settings/landing', \App\Livewire\Tenant\Settings\LandingSettings::class)->name('tenant.settings.landing');
 
         // Logout
         Route::post('logout', [LoginController::class, 'logout'])->name('tenant.logout');

@@ -20,6 +20,9 @@
                 <flux:sidebar.item icon="home" :href="route('tenant.dashboard')" :current="request()->routeIs('tenant.dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="globe-alt" :href="route('tenant.settings.landing')" :current="request()->routeIs('tenant.settings.landing')" wire:navigate>
+                    {{ __('Landing Page') }}
+                </flux:sidebar.item>
             </flux:sidebar.group>
         </flux:sidebar.nav>
 
