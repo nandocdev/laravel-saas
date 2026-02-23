@@ -36,7 +36,9 @@ class CreateWorkspace extends Component
       $this->submitting = true;
 
       $tenantId = Str::slug($this->domain);
-      $fullDomain = $tenantId . '.' . request()->getHost();
+      $host = request()->getHost();
+      $host = $host === '127.0.0.1' ? 'localhost' : $host;
+      $fullDomain = $tenantId . '.' . $host;
 
       // 1. Verify if domain actually exists in domains table
       if (\Illuminate\Support\Facades\DB::table('domains')->where('domain', $fullDomain)->exists()) {
@@ -104,6 +106,6 @@ class CreateWorkspace extends Component
    public function render()
    {
       return view('livewire.onboarding.create-workspace')
-         ->layout('components.layouts.app', ['title' => 'Create Workspace']);
+         ->layout('layouts.app', ['title' => 'Create Workspace']);
    }
 }

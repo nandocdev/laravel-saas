@@ -37,7 +37,7 @@
                                 @if($submitting) disabled @endif>
                                 
                             <span class="py-3 px-4 inline-flex items-center min-w-fit border border-s-0 border-line-2 rounded-e-lg bg-surface text-sm text-muted-foreground-1">
-                                .{{ request()->getHost() }}
+                                .{{ request()->getHost() === '127.0.0.1' ? 'localhost' : request()->getHost() }}
                             </span>
                         </div>
                         <p class="mt-2 text-xs text-muted-foreground-1">You can always customize your workspace URL later.</p>
