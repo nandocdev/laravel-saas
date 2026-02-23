@@ -10,34 +10,35 @@ use Livewire\Component;
 #[Layout('layouts.auth')]
 class Login extends Component
 {
-   #[Validate('required|email')]
-   public string $email = '';
+    #[Validate('required|email')]
+    public string $email = '';
 
-   #[Validate('required|min:6')]
-   public string $password = '';
+    #[Validate('required|min:6')]
+    public string $password = '';
 
-   public bool $remember = false;
+    public bool $remember = false;
 
-   public function authenticate(): void
-   {
-      $this->validate();
+    public function authenticate(): void
+    {
+        $this->validate();
 
-      if (! Auth::guard('admin')->attempt(
-         ['email' => $this->email, 'password' => $this->password],
-         $this->remember
-      )) {
-         $this->addError('email', __('These credentials do not match our records.'));
-         return;
-      }
+        if (! Auth::guard('admin')->attempt(
+            ['email' => $this->email, 'password' => $this->password],
+            $this->remember
+        )) {
+            $this->addError('email', __('These credentials do not match our records.'));
 
-      session()->regenerate();
+            return;
+        }
 
-      $this->redirectIntended(route('admin.dashboard'), navigate: true);
-   }
+        session()->regenerate();
 
-   public function render()
-   {
-      return view('livewire.admin.auth.login')
-         ->title('Admin Login — ' . config('app.name'));
-   }
+        $this->redirectIntended(route('admin.dashboard'), navigate: true);
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.auth.login')
+            ->title('Admin Login — '.config('app.name'));
+    }
 }

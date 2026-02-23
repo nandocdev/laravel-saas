@@ -8,17 +8,17 @@ use Illuminate\Http\Request;
 
 class TenantDashboardController extends Controller
 {
-   /**
-    * Show the tenant dashboard.
-    */
-   public function index(Request $request)
-   {
-      $tenant = tenant();
+    /**
+     * Show the tenant dashboard.
+     */
+    public function index(Request $request)
+    {
+        $tenant = tenant();
 
-      return view('tenant.dashboard', [
-         'tenant'     => $tenant,
-         'totalUsers' => User::count(),
-         'user'       => $request->user(),
-      ]);
-   }
+        return view('tenant.dashboard', [
+            'tenant' => $tenant,
+            'totalUsers' => User::count(),
+            'user' => $request->user(),
+        ]);
+    }
 }

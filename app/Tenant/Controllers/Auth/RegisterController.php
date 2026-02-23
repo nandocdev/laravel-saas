@@ -10,33 +10,33 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-   /**
-    * Show the tenant registration form.
-    */
-   public function showRegistrationForm()
-   {
-      return view('tenant.auth.register');
-   }
+    /**
+     * Show the tenant registration form.
+     */
+    public function showRegistrationForm()
+    {
+        return view('tenant.auth.register');
+    }
 
-   /**
-    * Handle a tenant registration request.
-    */
-   public function register(Request $request)
-   {
-      $validated = $request->validate([
-         'name'     => ['required', 'string', 'max:255'],
-         'email'    => ['required', 'email', 'max:255', 'unique:users'],
-         'password' => ['required', 'string', 'min:8', 'confirmed'],
-      ]);
+    /**
+     * Handle a tenant registration request.
+     */
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
 
-      $user = User::create([
-         'name'     => $validated['name'],
-         'email'    => $validated['email'],
-         'password' => Hash::make($validated['password']),
-      ]);
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
 
-      Auth::login($user);
+        Auth::login($user);
 
-      return redirect()->route('tenant.dashboard');
-   }
+        return redirect()->route('tenant.dashboard');
+    }
 }
