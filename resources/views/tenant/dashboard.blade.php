@@ -1,4 +1,4 @@
-<x-layouts.tenant :title="'Dashboard — ' . tenant('id')">
+<x-layouts::tenant :title="'Dashboard — ' . tenant('id')">
 
     <flux:heading size="xl">Dashboard</flux:heading>
     <flux:subheading>Welcome to your workspace, {{ $user->name }}.</flux:subheading>
@@ -78,4 +78,4 @@
         </div>
     </div>
 
-</x-layouts.tenant>
+</x-layouts::tenant>
