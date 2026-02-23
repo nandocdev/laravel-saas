@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Create Workspace')">
+
     <div class="flex h-full w-full flex-1 flex-col justify-center items-center py-10 px-4">
         
         <div class="w-full max-w-lg">
@@ -68,4 +68,3 @@
 
         </div>
     </div>
-</x-layouts::app>
