@@ -39,12 +39,18 @@ return [
             'password' => env('DB_CENTRAL_PASSWORD'),
         ],
 
-        'tenant' => [
-            'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'database' => null,
-            'username' => 'root',
-            'password' => '',
+        'tenant_template' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_CENTRAL_HOST', '127.0.0.1'),
+            'port' => env('DB_CENTRAL_PORT', '5432'),
+            'database' => env('DB_CENTRAL_DATABASE', 'postgres'), // Connects here for management ops; Spatie switches dynamically
+            'username' => env('DB_CENTRAL_USERNAME', 'postgres'),
+            'password' => env('DB_CENTRAL_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
         ],
 
         'sqlite' => [
