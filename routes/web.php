@@ -8,7 +8,7 @@ foreach (config('tenancy.central_domains', []) as $domain) {
             return view('welcome');
         })->name('home');
 
-        Route::view('dashboard', 'dashboard')
+        Route::get('dashboard', \App\Livewire\Onboarding\CreateWorkspace::class)
             ->middleware(['auth', 'verified'])
             ->name('dashboard');
 
