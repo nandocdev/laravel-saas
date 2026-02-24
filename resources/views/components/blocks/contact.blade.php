@@ -8,11 +8,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @if(!empty($data['email']))
                 <div class="p-6">
-                    <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
+                    <div class="size-12 rounded-full flex items-center justify-center mx-auto mb-4" style="background-color: color-mix(in srgb, var(--brand-primary), transparent 90%); color: var(--brand-primary)">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </div>
                     <h4 class="font-bold text-foreground mb-1">Email</h4>
-                    <a href="mailto:{{ $data['email'] }}" class="text-primary hover:underline">{{ $data['email'] }}</a>
+                    <a href="mailto:{{ $data['email'] }}" class="hover:underline" style="color: var(--brand-primary)">{{ $data['email'] }}</a>
                 </div>
             @endif
             

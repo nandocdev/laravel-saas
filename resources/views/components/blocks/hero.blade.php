@@ -18,7 +18,7 @@
     
     <div class="flex flex-col sm:flex-row justify-center gap-4">
         @isset($data['cta_link'])
-            <a href="{{ $data['cta_link'] }}" class="inline-flex justify-center items-center gap-x-2 text-base font-bold rounded-lg bg-primary border text-primary-foreground hover:bg-primary-hover px-8 py-3.5 transition-all shadow-sm">
+            <a href="{{ $data['cta_link'] }}" class="inline-flex justify-center items-center gap-x-2 text-base font-bold rounded-lg border text-primary-foreground hover:brightness-90 px-8 py-3.5 transition-all shadow-sm" style="background-color: var(--brand-primary); border-color: var(--brand-primary)">
                 {{ $data['cta_text'] ?? 'Get Started' }}
                 <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
