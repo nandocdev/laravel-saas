@@ -79,7 +79,7 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <flux:button type="button" size="sm" class="mt-2" wire:click="addRepeaterItem({{ $index }}, 'items', ['title' => 'New Feature', 'description' => ''])">+ Add Feature</flux:button>
+                                        <flux:button type="button" size="sm" class="mt-2" wire:click="addRepeaterItem({{ $index }}, 'items', {title: 'New Feature', description: ''})">+ Add Feature</flux:button>
                                         
                                     @elseif($block['type'] === 'testimonials')
                                         <flux:input wire:model="blocks.{{ $index }}.data.heading" label="Section Heading" />
@@ -98,7 +98,7 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <flux:button type="button" size="sm" class="mt-2" wire:click="addRepeaterItem({{ $index }}, 'items', ['name' => 'John Doe', 'role' => 'CTO', 'quote' => 'Amazing product!'] )">+ Add Testimonial</flux:button>
+                                        <flux:button type="button" size="sm" class="mt-2" wire:click="addRepeaterItem({{ $index }}, 'items', {name: 'John Doe', role: 'CTO', quote: 'Amazing product!'} )">+ Add Testimonial</flux:button>
                                         
                                     @elseif($block['type'] === 'faq')
                                         <flux:input wire:model="blocks.{{ $index }}.data.heading" label="Section Heading" />
@@ -114,7 +114,7 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <flux:button type="button" size="sm" class="mt-2" wire:click="addRepeaterItem({{ $index }}, 'items', ['question' => 'New Question?', 'answer' => 'New answer'] )">+ Add Question</flux:button>
+                                        <flux:button type="button" size="sm" class="mt-2" wire:click="addRepeaterItem({{ $index }}, 'items', {question: 'New Question?', answer: 'New answer'} )">+ Add Question</flux:button>
                                         
                                     @elseif($block['type'] === 'pricing')
                                         <flux:input wire:model="blocks.{{ $index }}.data.heading" label="Section Heading" />
@@ -155,7 +155,7 @@
                                             </div>
                                         @endforeach
                                         </div>
-                                        <flux:button type="button" size="sm" class="mt-4" wire:click="addRepeaterItem({{ $index }}, 'items', ['name' => 'Pro', 'price' => '49', 'popular' => false, 'features' => ['Core'], 'cta_text' => 'Get Started', 'cta_link' => '#'] )">+ Add Plan</flux:button>
+                                        <flux:button type="button" size="sm" class="mt-4" wire:click="addRepeaterItem({{ $index }}, 'items', {name: 'Pro', price: '49', popular: false, features: ['Core'], cta_text: 'Get Started', cta_link: '#'} )">+ Add Plan</flux:button>
                                         
                                     @else
                                         <div class="text-sm text-yellow-500">Unrecognized block type {{ $block['type'] }}. Structural editing not supported.</div>
