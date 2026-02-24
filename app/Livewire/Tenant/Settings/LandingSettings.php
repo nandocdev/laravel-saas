@@ -12,6 +12,7 @@ class LandingSettings extends Component
 
     public $template = 'corporate';
 
+
     public function mount()
     {
         $tenant = tenant();
@@ -24,19 +25,19 @@ class LandingSettings extends Component
             foreach ($config['blocks'] as $block) {
                 $this->blocks[] = [
                     'type' => $block['type'],
-                    'json_data' => json_encode($block['data'] ?? [], JSON_PRETTY_PRINT),
+                    'data' => $block['data'] ?? [],
                 ];
             }
         } else {
             // Fallback for first time or old flat fields
             $this->blocks[] = [
                 'type' => 'hero',
-                'json_data' => json_encode([
+                'data' => [
                     'title' => $tenant->landing_headline ?? $tenant->company_name ?? 'Welcome',
                     'subtitle' => $tenant->landing_description ?? 'The best solutions for your business.',
                     'cta_text' => $tenant->landing_cta ?? 'Contact Us',
                     'cta_link' => '#contact',
-                ], JSON_PRETTY_PRINT),
+                ],
             ];
         }
     }
@@ -49,15 +50,15 @@ class LandingSettings extends Component
             'hero' => ['title' => 'New Hero', 'subtitle' => 'Description here', 'cta_text' => 'Click Here', 'cta_link' => '#'],
             'features' => ['items' => [['title' => 'Feature 1', 'description' => '...']]],
             'testimonials' => ['heading' => 'Testimonials', 'items' => [['name' => 'John Doe', 'role' => 'CEO', 'quote' => 'Great!']]],
-            'pricing' => ['heading' => 'Pricing', 'items' => [['name' => 'Basic', 'price' => '10', 'features' => ['A', 'B'], 'cta_link' => '#']]],
+            'pricing' => ['heading' => 'Pricing', 'items' => [['name' => 'Basic', 'price' => '10', 'popular' => false, 'features' => ['A', 'B'], 'cta_text' => 'Choose Plan', 'cta_link' => '#']]],
             'faq' => ['heading' => 'FAQ', 'items' => [['question' => 'What is this?', 'answer' => 'An answer']]],
-            'contact' => ['heading' => 'Contact Us', 'email' => 'hello@example.com'],
+            'contact' => ['heading' => 'Contact Us', 'description' => 'Drop us a line.', 'email' => 'hello@example.com', 'phone' => '', 'address' => ''],
             default => []
         };
 
         $this->blocks[] = [
             'type' => $this->newBlockType,
-            'json_data' => json_encode($defaultData, JSON_PRETTY_PRINT),
+            'data' => $defaultData,
         ];
 
         $this->newBlockType = '';
@@ -66,7 +67,7 @@ class LandingSettings extends Component
     public function removeBlock($index)
     {
         unset($this->blocks[$index]);
-        $this->blocks = array_values($this->blocks);
+        $this->blocks = array_values($this->blocks); // Re-index array
     }
 
     public function moveBlockUp($index)
@@ -87,6 +88,35 @@ class LandingSettings extends Component
         }
     }
 
+    // Array manipulation helpers for inner repeater items (features, testimonials, etc)
+    public function addRepeaterItem($blockIndex, $key, $defaultItem)
+    {
+        if (!isset($this->blocks[$blockIndex]['data'][$key])) {
+            $this->blocks[$blockIndex]['data'][$key] = [];
+        }
+        $this->blocks[$blockIndex]['data'][$key][] = $defaultItem;
+    }
+
+    public function removeRepeaterItem($blockIndex, $key, $itemIndex)
+    {
+        unset($this->blocks[$blockIndex]['data'][$key][$itemIndex]);
+        $this->blocks[$blockIndex]['data'][$key] = array_values($this->blocks[$blockIndex]['data'][$key]);
+    }
+
+    public function addPricingFeature($blockIndex, $pricingItemIndex)
+    {
+        if (!isset($this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'])) {
+            $this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'] = [];
+        }
+        $this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'][] = 'New Feature';
+    }
+
+    public function removePricingFeature($blockIndex, $pricingItemIndex, $featureIndex)
+    {
+        unset($this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'][$featureIndex]);
+        $this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'] = array_values($this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features']);
+    }
+
     public function save()
     {
         $this->validate([
@@ -97,16 +127,10 @@ class LandingSettings extends Component
 
         $parsedBlocks = [];
         foreach ($this->blocks as $block) {
-            $data = json_decode($block['json_data'], true);
-            if (json_last_error() === JSON_ERROR_NONE) {
-                $parsedBlocks[] = [
-                    'type' => $block['type'],
-                    'data' => $data,
-                ];
-            } else {
-                $this->addError("blocks.{$block['type']}", "Invalid JSON in {$block['type']} block.");
-                return;
-            }
+            $parsedBlocks[] = [
+                'type' => $block['type'],
+                'data' => $block['data'] ?? [],
+            ];
         }
 
         $tenant = tenant();
