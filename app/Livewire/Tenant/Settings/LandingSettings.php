@@ -4,10 +4,20 @@ namespace App\Livewire\Tenant\Settings;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\WithFileUploads;
 
 class LandingSettings extends Component
 {
+    use WithFileUploads;
+
     public $company_name;
+    public $logo;
+    public $existing_logo;
+
+    public $primary_color = '#3b82f6';
+    public $neutral_color = '#6b7280';
+    public $accent_color = '#ec4899';
+
     public array $blocks = [];
     public $newBlockType = '';
 
@@ -21,6 +31,11 @@ class LandingSettings extends Component
 
         $config = $tenant->landing_page_config;
         $this->template = $config['template'] ?? 'corporate';
+        $this->existing_logo = $config['logo'] ?? null;
+
+        $this->primary_color = $config['colors']['primary'] ?? '#3b82f6';
+        $this->neutral_color = $config['colors']['neutral'] ?? '#6b7280';
+        $this->accent_color = $config['colors']['accent'] ?? '#ec4899';
 
         if (is_array($config) && isset($config['blocks'])) {
             foreach ($config['blocks'] as $block) {
@@ -139,9 +154,23 @@ class LandingSettings extends Component
 
         $tenant = tenant();
 
+        $logoPath = $this->existing_logo;
+        if ($this->logo) {
+            $logoPath = $this->logo->store('logos', 'public');
+        }
+
         $tenant->update([
             'company_name' => $this->company_name,
-            'landing_page_config' => ['template' => $this->template, 'blocks' => $parsedBlocks],
+            'landing_page_config' => [
+                'template' => $this->template,
+                'logo' => $logoPath,
+                'colors' => [
+                    'primary' => $this->primary_color,
+                    'neutral' => $this->neutral_color,
+                    'accent' => $this->accent_color,
+                ],
+                'blocks' => $parsedBlocks
+            ],
         ]);
 
         session()->flash('message', 'Landing page settings updated successfully.');

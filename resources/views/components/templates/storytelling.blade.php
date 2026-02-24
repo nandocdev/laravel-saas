@@ -1,4 +1,4 @@
-@props(['blocks'])
+@props(['blocks', 'logo' => null])
 
 <div class="landing-template-storytelling bg-amber-50 text-amber-950 font-serif">
     {{-- Storytelling: More human, warm colors, minimalist background. --}}

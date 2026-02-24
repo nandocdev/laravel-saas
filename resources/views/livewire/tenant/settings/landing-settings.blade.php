@@ -23,6 +23,53 @@
                         <option value="onepage">One Page Minimal</option>
                     </flux:select>
                 </div>
+
+                <div class="mt-8 border-t border-line-2 pt-8">
+                    <flux:heading size="lg" class="mb-4">Branding & Identity</flux:heading>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <flux:field>
+                                <flux:label>Company Logo</flux:label>
+                                
+                                <div class="mt-2 flex items-center gap-4">
+                                    @if ($logo)
+                                        <img src="{{ $logo->temporaryUrl() }}" class="size-16 object-contain border border-line-2 rounded-lg bg-surface">
+                                    @elseif ($existing_logo)
+                                        <img src="{{ asset('storage/' . $existing_logo) }}" class="size-16 object-contain border border-line-2 rounded-lg bg-surface">
+                                    @else
+                                        <div class="size-16 border border-dashed border-line-2 rounded-lg flex items-center justify-center text-muted text-xs">No Logo</div>
+                                    @endif
+
+                                    <div class="flex-1">
+                                        <input type="file" wire:model="logo" class="text-sm text-muted block w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90">
+                                        <div wire:loading wire:target="logo" class="text-xs text-muted mt-1">Uploading...</div>
+                                        @error('logo') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                    </div>
+                                </div>
+                            </flux:field>
+                        </div>
+
+                        <div class="space-y-4">
+                            <flux:label>Color Palette</flux:label>
+                            
+                            <div class="grid grid-cols-3 gap-4">
+                                <flux:field>
+                                    <flux:label size="sm">Primary</flux:label>
+                                    <input type="color" wire:model="primary_color" class="block w-full h-10 p-1 rounded-lg border border-line-2 bg-surface">
+                                </flux:field>
+                                <flux:field>
+                                    <flux:label size="sm">Neutral</flux:label>
+                                    <input type="color" wire:model="neutral_color" class="block w-full h-10 p-1 rounded-lg border border-line-2 bg-surface">
+                                </flux:field>
+                                <flux:field>
+                                    <flux:label size="sm">Accent</flux:label>
+                                    <input type="color" wire:model="accent_color" class="block w-full h-10 p-1 rounded-lg border border-line-2 bg-surface">
+                                </flux:field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="mt-8 border-t border-line-2 pt-8">
                     <flux:heading size="lg" class="mb-4">Page Blocks</flux:heading>

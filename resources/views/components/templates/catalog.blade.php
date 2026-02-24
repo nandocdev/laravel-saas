@@ -1,4 +1,4 @@
-@props(['blocks'])
+@props(['blocks', 'logo' => null])
 
 <div class="landing-template-catalog bg-gray-50 text-gray-900">
     {{-- Marketplace / Catalog: Oriented to grid products. --}}
