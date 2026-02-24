@@ -1,67 +1,90 @@
-<x-layouts::auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<head>
+    @include('partials.head')
+</head>
+<body class="bg-background text-foreground antialiased min-h-screen flex items-center justify-center px-4">
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
-
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
-            @csrf
-            <!-- Name -->
-            <flux:input
-                name="name"
-                :label="__('Name')"
-                :value="old('name')"
-                type="text"
-                required
-                autofocus
-                autocomplete="name"
-                :placeholder="__('Full name')"
-            />
-
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
-
-            <!-- Password -->
-            <flux:input
-                name="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Password')"
-                viewable
-            />
-
-            <!-- Confirm Password -->
-            <flux:input
-                name="password_confirmation"
-                :label="__('Confirm password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Confirm password')"
-                viewable
-            />
-
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
-                    {{ __('Create account') }}
-                </flux:button>
-            </div>
-        </form>
-
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <a href="/" class="inline-flex items-center gap-2 text-2xl font-bold text-foreground">
+                <span class="size-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
+                    <svg class="size-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </span>
+                SaaSFlow
+            </a>
+            <p class="mt-2 text-sm text-muted-foreground-1">Create your account</p>
         </div>
+
+        <!-- Card -->
+        <div class="bg-card border border-card-line rounded-2xl shadow-2xs p-6 sm:p-8">
+            <h2 class="text-lg font-bold text-foreground text-center mb-6">Get started</h2>
+
+            <!-- Session Status -->
+            <x-auth-session-status class="mb-4 text-center" :status="session('status')" />
+
+            @if($errors->any())
+                <div class="mb-4 p-3 rounded-lg bg-red-100 text-red-800 dark:bg-red-500/10 dark:text-red-400 text-sm">
+                    @foreach($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('register.store') }}" class="space-y-5">
+                @csrf
+
+                <!-- Name -->
+                <div>
+                    <label for="name" class="block text-sm font-medium text-foreground mb-1.5">Full name</label>
+                    <input type="text" name="name" id="name" value="{{ old('name') }}" required autocomplete="name" autofocus
+                           class="py-3 px-4 block w-full border border-line-2 rounded-lg text-sm text-foreground bg-background placeholder-muted-foreground-1 focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none transition-all"
+                           placeholder="John Doe">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-foreground mb-1.5">Email address</label>
+                    <input type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="email"
+                           class="py-3 px-4 block w-full border border-line-2 rounded-lg text-sm text-foreground bg-background placeholder-muted-foreground-1 focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none transition-all"
+                           placeholder="you@company.com">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-foreground mb-1.5">Password</label>
+                    <input type="password" name="password" id="password" required autocomplete="new-password"
+                           class="py-3 px-4 block w-full border border-line-2 rounded-lg text-sm text-foreground bg-background placeholder-muted-foreground-1 focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none transition-all"
+                           placeholder="Min. 8 characters">
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="password_confirmation" class="block text-sm font-medium text-foreground mb-1.5">Confirm password</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation" required autocomplete="new-password"
+                           class="py-3 px-4 block w-full border border-line-2 rounded-lg text-sm text-foreground bg-background placeholder-muted-foreground-1 focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none transition-all"
+                           placeholder="Repeat password">
+                </div>
+
+                <!-- Submit -->
+                <button type="submit"
+                        class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-bold rounded-lg bg-primary border border-primary-line text-primary-foreground hover:bg-primary-hover focus:outline-hidden focus:bg-primary-focus disabled:opacity-50 disabled:pointer-events-none transition-all shadow-sm">
+                    Create account
+                </button>
+            </form>
+        </div>
+
+        <p class="mt-6 text-center text-sm text-muted-foreground-1">
+            Already have an account?
+            <a href="{{ route('login') }}" class="font-semibold text-primary hover:text-primary-hover transition-colors">Sign in</a>
+        </p>
+
+        <p class="mt-4 text-center text-xs text-muted-foreground-1">
+            <a href="/" class="text-primary hover:text-primary-hover transition-colors">← Back to site</a>
+        </p>
     </div>
-</x-layouts::auth>
+
+    @livewireScripts
+</body>
+</html>
