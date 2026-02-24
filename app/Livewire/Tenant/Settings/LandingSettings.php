@@ -3,6 +3,7 @@
 namespace App\Livewire\Tenant\Settings;
 
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
 class LandingSettings extends Component
 {
@@ -146,9 +147,9 @@ class LandingSettings extends Component
         session()->flash('message', 'Landing page settings updated successfully.');
     }
 
+    #[Layout('layouts.tenant', ['title' => 'Landing Settings'])]
     public function render()
     {
-        return view('livewire.tenant.settings.landing-settings')
-            ->layout('layouts.tenant', ['title' => 'Landing Settings']);
+        return view('livewire.tenant.settings.landing-settings');
     }
 }
