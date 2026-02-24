@@ -24,6 +24,7 @@ class LandingSettings extends Component
         if (is_array($config) && isset($config['blocks'])) {
             foreach ($config['blocks'] as $block) {
                 $this->blocks[] = [
+                    'id' => uniqid(),
                     'type' => $block['type'],
                     'data' => $block['data'] ?? [],
                 ];
@@ -31,6 +32,7 @@ class LandingSettings extends Component
         } else {
             // Fallback for first time or old flat fields
             $this->blocks[] = [
+                'id' => uniqid(),
                 'type' => 'hero',
                 'data' => [
                     'title' => $tenant->landing_headline ?? $tenant->company_name ?? 'Welcome',
@@ -57,6 +59,7 @@ class LandingSettings extends Component
         };
 
         $this->blocks[] = [
+            'id' => uniqid(),
             'type' => $this->newBlockType,
             'data' => $defaultData,
         ];
