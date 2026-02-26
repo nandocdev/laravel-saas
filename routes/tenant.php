@@ -47,6 +47,8 @@ Route::middleware([
 
         // Settings
         Route::get('settings/landing', \App\Livewire\Tenant\Landing\LandingBuilder::class)->name('tenant.settings.landing');
+        Route::get('settings/landing/preview', [\App\Tenant\Controllers\PublicLandingController::class, 'show'])
+            ->name('tenant.landing.preview');
 
         // Logout
         Route::post('logout', [LoginController::class, 'logout'])->name('tenant.logout');
