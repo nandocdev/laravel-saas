@@ -24,8 +24,8 @@ class AppServiceProvider extends ServiceProvider
             return Route::post('/livewire/update', $handle)
                 ->middleware([
                     'web',
-                    'universal',
                     \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
+                    'universal',
                 ]);
         });
     }

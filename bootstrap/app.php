@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'universal' => \Stancl\Tenancy\Middleware\ScopeSessions::class,
+            'universal' => \App\Http\Middleware\ScopeSessions::class,
         ]);
 
         $middleware->redirectGuestsTo(function (\Illuminate\Http\Request $request) {
