@@ -923,7 +923,7 @@
             box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), var(--shadow-lg);
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.3s;
             width: 100%;
-            max-width: 900px;
+            max-width: 1400px;
             position: relative;
             z-index: 1;
         }
@@ -1471,12 +1471,13 @@
 
                 <div class="templates-grid">
                     @foreach($this->availableTemplates as $tpl)
-                    <div class="template-card {{ $templateKey === $tpl['key'] ? 'selected' : '' }}"
-                         wire:click="selectTemplate('{{ $tpl['key'] }}')"
-                         @if($templateKey !== $tpl['key'])
-                             wire:confirm="¿Cambiar plantilla? Se reemplazarán las secciones actuales."
-                         @endif
-                    >
+                      <div class="template-card {{ $templateKey === $tpl['key'] ? 'selected' : '' }}"
+                           @if($templateKey !== $tpl['key'])
+                               wire:click="confirmTemplateChange('{{ $tpl['key'] }}')"
+                           @else
+                               wire:click="selectTemplate('{{ $tpl['key'] }}')"
+                           @endif
+                      >
                         <div class="template-thumb" style="background: white;">
                              @switch($tpl['key'])
                                 @case('corporate')
@@ -1887,7 +1888,7 @@
                 </svg>
             </button>
         </div>
-        <div class="edit-panel-body bg-white text-gray-800">
+        <div class="edit-panel-body bg-white text-gray-200">
             @if($this->editingBlock)
                 @includeIf('livewire.tenant.landing.block-settings.' . $this->editingBlock->block_type, [
                     'block'    => $this->editingBlock,
@@ -1922,4 +1923,6 @@
         <span x-text="msg"></span>
     </div>
 
+    @livewire('tenant.landing.template-confirm-modal', [], key('template-confirm-modal'))
+ 
 </div><!-- end shell -->

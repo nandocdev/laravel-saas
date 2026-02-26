@@ -6,6 +6,7 @@ use App\Models\LandingBlock;
 use App\Models\TenantLanding;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 /**
  * LandingBuilder
@@ -18,6 +19,8 @@ use Livewire\Component;
 
 class LandingBuilder extends Component
 {
+    use WithFileUploads;
+
     // ═══════════════════════════════════════════
     // ESTADO DE UI  (no persisten en BD)
     // ═══════════════════════════════════════════
@@ -78,6 +81,9 @@ class LandingBuilder extends Component
      * Se persiste al pulsar "Guardar sección".
      */
     public array $editingSettings = [];
+
+    /** Archivo temporal de subida para cualquier bloque que requiera imagen */
+    public $imageUpload;
 
     // ═══════════════════════════════════════════
     // MOUNT
@@ -175,6 +181,16 @@ class LandingBuilder extends Component
     // TAB: PLANTILLA
     // ═══════════════════════════════════════════
 
+    protected $listeners = [
+        'templateSelected' => 'selectTemplate'
+    ];
+
+    public function confirmTemplateChange(string $key): void
+    {
+        $this->dispatch('confirmTemplateChange', key: $key);
+    }
+
+    #[\Livewire\Attributes\On('templateSelected')]
     public function selectTemplate(string $key): void
     {
         $this->landing->applyTemplate($key);
@@ -273,6 +289,7 @@ class LandingBuilder extends Component
         $this->editingSettings = $block->settings ?? [];
         $this->editPanelOpen   = true;
         $this->selectedBlockId = $id;
+        $this->imageUpload     = null;
     }
 
     public function closeEditPanel(): void
@@ -280,12 +297,19 @@ class LandingBuilder extends Component
         $this->editPanelOpen   = false;
         $this->editingBlockId  = null;
         $this->editingSettings = [];
+        $this->imageUpload     = null;
     }
 
     /** Persiste los settings del bloque en edición a la BD. */
     public function saveEditingBlock(): void
     {
         if (!$this->editingBlockId) return;
+
+        if ($this->imageUpload) {
+            $path = $this->imageUpload->store('tenant/landing', 'public');
+            $this->editingSettings['image_url'] = '/storage/' . $path;
+            $this->imageUpload = null;
+        }
 
         LandingBlock::findOrFail($this->editingBlockId)
             ->update(['settings' => $this->editingSettings]);

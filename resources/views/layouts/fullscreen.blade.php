@@ -23,10 +23,12 @@
         .font-mono { font-family: 'DM Mono', monospace; }
         [x-cloak] { display: none !important; }
     </style>
+    @livewireStyles
 </head>
 <body class="h-full overflow-hidden antialiased flex flex-col min-h-screen text-gray-900 m-0">
     <main class="flex-grow flex flex-col w-full h-full relative">
         {{ $slot }}
     </main>
+    @livewireScripts
 </body>
 </html>
