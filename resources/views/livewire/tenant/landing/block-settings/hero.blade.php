@@ -10,104 +10,94 @@
 
     {{-- Badge --}}
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color:rgba(255,255,255,0.35)">Badge superior</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Badge superior</label>
         <input
             wire:model="editingSettings.badge"
             type="text"
             placeholder="✦ Disponible ahora"
-            class="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-white/20 focus:outline-none transition-colors"
-            style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09)"
+            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:pointer-events-none"
         >
-        <p class="text-[10px] mt-1" style="color:rgba(255,255,255,0.25)">Deja en blanco para ocultarlo.</p>
+        <p class="text-xs text-gray-400 mt-1">Deja en blanco para ocultarlo.</p>
     </div>
 
     {{-- Headline --}}
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color:rgba(255,255,255,0.35)">Titular principal</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Titular principal</label>
         <textarea
             wire:model="editingSettings.headline"
             rows="2"
             placeholder="El servicio que tu negocio necesita"
-            class="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-white/20 focus:outline-none resize-none transition-colors"
-            style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09)"
+            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:pointer-events-none"
         ></textarea>
     </div>
 
     {{-- Subheadline --}}
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color:rgba(255,255,255,0.35)">Subtítulo</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Subtítulo</label>
         <textarea
             wire:model="editingSettings.subheadline"
             rows="2"
             placeholder="Profesional · Confiable · Siempre disponible"
-            class="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-white/20 focus:outline-none resize-none transition-colors"
-            style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09)"
+            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:pointer-events-none"
         ></textarea>
     </div>
 
-    <div class="h-px" style="background:rgba(255,255,255,0.06)"></div>
+    <div class="h-px my-5 bg-gray-200"></div>
 
     {{-- CTA Principal --}}
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color:rgba(255,255,255,0.35)">Botón principal — texto</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Botón principal — texto</label>
         <input
             wire:model="editingSettings.cta_text"
             type="text"
             placeholder="Comenzar ahora"
-            class="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-white/20 focus:outline-none transition-colors"
-            style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09)"
+            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:pointer-events-none"
         >
     </div>
 
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color:rgba(255,255,255,0.35)">Botón principal — URL</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Botón principal — URL</label>
         <input
             wire:model="editingSettings.cta_url"
             type="text"
             placeholder="#contacto"
-            class="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-white/20 focus:outline-none transition-colors"
-            style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09)"
+            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:pointer-events-none"
         >
     </div>
 
-    <div class="h-px" style="background:rgba(255,255,255,0.06)"></div>
+    <div class="h-px my-5 bg-gray-200"></div>
 
     {{-- CTA Secundario --}}
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color:rgba(255,255,255,0.35)">Botón secundario — texto</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Botón secundario — texto</label>
         <input
             wire:model="editingSettings.cta2_text"
             type="text"
             placeholder="Ver más (opcional)"
-            class="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-white/20 focus:outline-none transition-colors"
-            style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09)"
+            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:pointer-events-none"
         >
     </div>
 
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color:rgba(255,255,255,0.35)">Botón secundario — URL</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Botón secundario — URL</label>
         <input
             wire:model="editingSettings.cta2_url"
             type="text"
             placeholder="#servicios"
-            class="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-white/20 focus:outline-none transition-colors"
-            style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09)"
+            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:pointer-events-none"
         >
     </div>
 
-    <div class="h-px" style="background:rgba(255,255,255,0.06)"></div>
+    <div class="h-px my-5 bg-gray-200"></div>
 
     {{-- Layout --}}
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-2" style="color:rgba(255,255,255,0.35)">Disposición</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Disposición</label>
         <div class="grid grid-cols-3 gap-1.5">
             @foreach(['centered' => 'Centrado', 'split' => 'Dividido', 'fullscreen' => 'Full'] as $val => $lbl)
             <button
                 wire:click="$set('editingSettings.layout', '{{ $val }}')"
-                class="py-2 rounded-lg text-[11px] font-semibold transition-all"
-                style="border:1px solid {{ ($settings['layout'] ?? 'centered') === $val ? 'rgba(124,111,247,0.6)' : 'rgba(255,255,255,0.06)' }};
-                       background:{{ ($settings['layout'] ?? 'centered') === $val ? 'rgba(124,111,247,0.08)' : 'transparent' }};
-                       color:{{ ($settings['layout'] ?? 'centered') === $val ? '#9d93ff' : 'rgba(255,255,255,0.4)' }}"
+                class="py-2 text-xs font-semibold rounded-lg border border-transparent {{ ($settings['layout'] ?? 'centered') === $val ? 'bg-blue-50 text-blue-600 border-blue-200' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50' }} transition-colors shadow-sm focus:outline-none"
             >{{ $lbl }}</button>
             @endforeach
         </div>
@@ -116,13 +106,12 @@
     {{-- Imagen (para layout split) --}}
     @if(($settings['layout'] ?? 'centered') === 'split')
     <div>
-        <label class="block text-[10px] font-bold uppercase tracking-widest mb-1.5" style="color:rgba(255,255,255,0.35)">URL de imagen</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">URL de imagen</label>
         <input
             wire:model="editingSettings.image_url"
             type="text"
             placeholder="https://..."
-            class="w-full px-3 py-2 rounded-lg text-sm text-white placeholder-white/20 focus:outline-none transition-colors"
-            style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09)"
+            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:pointer-events-none"
         >
     </div>
     @endif

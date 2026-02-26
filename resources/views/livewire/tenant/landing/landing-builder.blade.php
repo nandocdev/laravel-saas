@@ -27,8 +27,7 @@
 {{-- ╔══════════════════════════════════════════╗
      ║  TOPBAR                                  ║
      ╚══════════════════════════════════════════╝ --}}
-<header class="flex items-center justify-between px-6 h-14 flex-shrink-0 border-b gap-4 bg-white"
-        style="border-color:#e2e8f0;">
+<header class="flex items-center justify-between px-6 h-14 flex-shrink-0 border-b border-gray-200 gap-4 bg-white">
 
     <div class="flex items-center gap-3">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-2 text-sm font-bold text-slate-700 hover:text-slate-900 transition-colors">
@@ -46,30 +45,20 @@
 
     <div class="flex items-center gap-2">
         {{-- Status badge --}}
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border"
-              style="{{ $status === 'published'
-                ? 'background:rgba(34,197,94,0.1); color:#86efac; border-color:rgba(34,197,94,0.2)'
-                : 'background:rgba(234,179,8,0.1); color:#fde68a; border-color:rgba(234,179,8,0.2)' }}">
-            <span class="size-1.5 rounded-full {{ $status === 'published' ? 'animate-pulse' : '' }}"
-                  style="background:{{ $status === 'published' ? '#86efac' : '#fde68a' }}"></span>
+        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs font-medium {{ $status === 'published' ? 'bg-teal-100 text-teal-800' : 'bg-yellow-100 text-yellow-800' }}">
+            <span class="size-1.5 inline-block rounded-full bg-current {{ $status === 'published' ? 'animate-pulse' : '' }}"></span>
             {{ $status === 'published' ? 'En vivo' : 'Borrador' }}
         </span>
 
         <a href="{{ route('tenant.landing.preview', ['preview' => 'true']) }}" target="_blank"
-           class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
-           style="color:#64748b; border:1px solid #e2e8f0; background:white;"
-           onmouseover="this.style.background='#f1f5f9'; this.style.color='#0f172a'"
-           onmouseout="this.style.background='white'; this.style.color='#64748b'"
+           class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none transition-colors"
         >
             <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Vista previa
         </a>
 
         <button wire:click="togglePublish"
-                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
-                style="{{ $status === 'published'
-                    ? 'background:rgba(239,68,68,0.1); color:#fca5a5; border-color:rgba(239,68,68,0.2)'
-                    : 'background:rgba(34,197,94,0.1); color:#86efac; border-color:rgba(34,197,94,0.2)' }}"
+                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-white focus:outline-none disabled:opacity-50 disabled:pointer-events-none transition-colors {{ $status === 'published' ? 'bg-red-500 hover:bg-red-600 focus:bg-red-600' : 'bg-teal-500 hover:bg-teal-600 focus:bg-teal-600' }}"
         >
             @if($status === 'published')
                 <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
@@ -90,21 +79,17 @@
     {{-- ┌─────────────────────────────────────┐
          │  SIDEBAR                            │
          └─────────────────────────────────────┘ --}}
-    <aside class="w-[360px] flex-shrink-0 flex flex-col overflow-hidden"
-           style="background:white; border-right:1px solid #e2e8f0">
+    <aside class="w-[360px] flex-shrink-0 flex flex-col overflow-hidden bg-white border-r border-gray-200">
 
         {{-- Tabs --}}
-        <nav class="flex px-1 gap-0.5 border-b flex-shrink-0" style="border-color:#e2e8f0; background:white">
+        <nav class="flex space-x-2 p-2 mx-2 mt-2 bg-gray-100 rounded-lg flex-shrink-0" aria-label="Tabs">
             @foreach([
                 'template' => 'Plantilla',
                 'sections' => 'Secciones',
                 'style'    => 'Estilo',
             ] as $tab => $label)
                 <button wire:click="$set('activeTab', '{{ $tab }}')"
-                        class="flex-1 py-3 text-xs font-semibold transition-all border-b-2 -mb-px"
-                        style="{{ $activeTab === $tab
-                            ? 'color:#4f46e5; border-color:#4f46e5;'
-                            : 'color:#64748b; border-color:transparent;' }}"
+                        class="flex-1 py-1.5 px-3 whitespace-nowrap text-center text-xs font-medium rounded-md focus:outline-none transition-colors {{ $activeTab === $tab ? 'bg-white text-gray-800 shadow-sm ring-1 ring-gray-200/50' : 'text-gray-500 hover:text-gray-700' }}"
                 >{{ $label }}</button>
             @endforeach
         </nav>
@@ -115,7 +100,7 @@
             {{-- ══════════════ TAB: PLANTILLA ══════════════ --}}
             @if($activeTab === 'template')
             <div class="p-5">
-                <p class="text-[10px] font-bold uppercase tracking-widest mb-3" style="color:#64748b">
+                <p class="text-xs font-semibold text-gray-500 uppercase mb-3">
                     Elige tu plantilla base
                 </p>
 
@@ -225,17 +210,17 @@
                 </div>
 
                 {{-- Plantilla activa pill --}}
-                <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#f8fafc; border:1px solid #e2e8f0">
-                    <div class="size-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(79,70,229,0.1)">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-200">
+                    <div class="size-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-blue-100/50">
                         <svg class="size-4" fill="none" stroke="#9d93ff" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-xs font-bold text-slate-800 truncate">
+                        <p class="text-sm font-semibold text-gray-800 truncate">
                             {{ collect($this->availableTemplates)->firstWhere('key', $templateKey)['name'] ?? $templateKey }}
                         </p>
-                        <p class="text-[10px]" style="color:#94a3b8">Plantilla activa</p>
+                        <p class="text-xs text-gray-500">Plantilla activa</p>
                     </div>
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:rgba(79,70,229,0.1); color:#4f46e5">Activa</span>
+                    <span class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 px-2 py-0.5">Activa</span>
                 </div>
             </div>
             @endif
@@ -243,8 +228,8 @@
             {{-- ══════════════ TAB: SECCIONES ══════════════ --}}
             @if($activeTab === 'sections')
             <div class="p-5">
-                <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:#64748b">Secciones</p>
-                <p class="text-[11px] mb-4" style="color:#94a3b8">Arrastra · activa/desactiva · edita</p>
+                <p class="text-xs font-semibold text-gray-500 uppercase mb-1">Secciones</p>
+                <p class="text-xs text-gray-500 mb-4">Arrastra · activa/desactiva · edita</p>
 
                 <div class="space-y-1.5 mb-3">
                     @foreach($this->blocks as $block)
@@ -259,14 +244,11 @@
                             $wire.reorderFromDrag(ids)
                         "
                         data-block="{{ $block->id }}"
-                        class="group flex items-center gap-2 px-3 py-2.5 rounded-xl cursor-pointer transition-all select-none"
-                        style="border:1px solid {{ $selectedBlockId === $block->id ? 'rgba(79,70,229,0.5)' : '#e2e8f0' }};
-                               background:{{ $selectedBlockId === $block->id ? 'rgba(79,70,229,0.05)' : 'transparent' }};
-                               opacity:{{ $block->is_active ? '1' : '0.4' }}"
+                        class="group flex items-center gap-2 px-3 py-2.5 rounded-xl cursor-pointer transition-all select-none border border-transparent {{ $selectedBlockId === $block->id ? 'bg-blue-50/50 border-blue-200' : 'border-gray-200 hover:border-blue-100 hover:bg-gray-50' }} {{ $block->is_active ? 'opacity-100' : 'opacity-40' }}"
                         wire:click="$set('selectedBlockId', {{ $selectedBlockId === $block->id ? 'null' : $block->id }})"
                     >
                         {{-- Drag handle --}}
-                        <div class="flex-shrink-0 cursor-grab active:cursor-grabbing" style="color:#94a3b8">
+                        <div class="flex-shrink-0 cursor-grab active:cursor-grabbing" class="text-gray-400">
                             <svg class="size-3.5" fill="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="5" r="1.5"/><circle cx="15" cy="5" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="19" r="1.5"/></svg>
                         </div>
 
@@ -278,22 +260,22 @@
 
                         {{-- Info --}}
                         <div class="flex-1 min-w-0">
-                            <p class="text-xs font-semibold text-slate-900 leading-none truncate">{{ $block->getLabel() }}</p>
-                            <p class="text-[10px] mt-0.5 truncate" style="color:#94a3b8">{{ $block->getTag() }}</p>
+                            <p class="text-sm font-medium text-gray-800 leading-none truncate">{{ $block->getLabel() }}</p>
+                            <p class="text-[10px] mt-0.5 truncate" class="text-gray-400">{{ $block->getTag() }}</p>
                         </div>
 
                         {{-- Flechas orden (hover) --}}
                         <div class="hidden group-hover:flex items-center gap-0.5">
                             <button wire:click.stop="moveBlock({{ $block->id }}, 'up')"
                                     class="size-5 flex items-center justify-center rounded transition-all"
-                                    style="color:#94a3b8"
+                                    class="text-gray-400"
                                     onmouseover="this.style.color='#0f172a'; this.style.background='#f1f5f9'"
                                     onmouseout="this.style.color='#94a3b8'; this.style.background='transparent'">
                                 <svg class="size-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg>
                             </button>
                             <button wire:click.stop="moveBlock({{ $block->id }}, 'down')"
                                     class="size-5 flex items-center justify-center rounded transition-all"
-                                    style="color:#94a3b8"
+                                    class="text-gray-400"
                                     onmouseover="this.style.color='#0f172a'; this.style.background='#f1f5f9'"
                                     onmouseout="this.style.color='#94a3b8'; this.style.background='transparent'">
                                 <svg class="size-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
@@ -301,21 +283,14 @@
                         </div>
 
                         {{-- Toggle --}}
-                        <label class="relative inline-flex items-center cursor-pointer flex-shrink-0" x-on:click.stop>
-                            <input type="checkbox" class="sr-only peer"
-                                   {{ $block->is_active ? 'checked' : '' }}
-                                   wire:click.stop="toggleBlock({{ $block->id }})">
-                            <div class="w-8 h-4 rounded-full transition-colors peer-checked:bg-emerald-500"
-                                 style="background:#e2e8f0"></div>
-                            <div class="absolute left-0.5 top-0.5 size-3 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></div>
-                        </label>
+                        <div class="flex items-center flex-shrink-0" x-on:click.stop>
+        <input type="checkbox" id="hs-basic-usage-{{ $block->id }}" class="relative w-[3.25rem] h-7 p-px bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600 before:inline-block before:size-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"
+        {{ $block->is_active ? 'checked' : '' }} wire:click.stop="toggleBlock({{ $block->id }})">
+    </div>
 
                         {{-- Edit --}}
                         <button wire:click.stop="openEditPanel({{ $block->id }})"
-                                class="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold flex-shrink-0 transition-all"
-                                style="color:#64748b; background:white; border:1px solid #e2e8f0"
-                                onmouseover="this.style.color='#0f172a'; this.style.background='#f8fafc'"
-                                onmouseout="this.style.color='#64748b'; this.style.background='white'">
+                                class="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 flex-shrink-0 transition-colors">
                             <svg class="size-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z"/></svg>
                             Editar
                         </button>
@@ -324,7 +299,7 @@
                         <button wire:click.stop="deleteBlock({{ $block->id }})"
                                 wire:confirm="¿Eliminar esta sección?"
                                 class="flex-shrink-0 size-6 hidden group-hover:flex items-center justify-center rounded-lg transition-all"
-                                style="color:#94a3b8"
+                                class="text-gray-400"
                                 onmouseover="this.style.color='#fca5a5'; this.style.background='rgba(239,68,68,0.1)'"
                                 onmouseout="this.style.color='rgba(255,255,255,0.2)'; this.style.background='transparent'">
                             <svg class="size-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
@@ -351,18 +326,17 @@
 
                 {{-- Nombre del sitio --}}
                 <div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest mb-2" style="color:#64748b">Nombre del sitio</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Nombre del sitio</p>
                     <input wire:model.blur="siteName" type="text"
-                           class="w-full px-3 py-2 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-colors"
-                           style="background:white; border:1px solid #e2e8f0"
+                           class="py-2.5 px-3 block w-full border-gray-200 rounded-lg text-sm text-gray-800 focus:border-blue-500 focus:ring-blue-500 transition-colors"
                            placeholder="MiEmpresa">
                 </div>
 
-                <div class="h-px" style="background:#e2e8f0"></div>
+                <div class="h-px my-5 bg-gray-200"></div>
 
                 {{-- 3 Color pickers --}}
                 <div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest mb-3" style="color:#64748b">Colores</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase mb-3">Colores</p>
 
                     @foreach([
                         ['prop' => 'colorPrimary', 'alpine' => 'primary', 'presets' => 'primaryPresets', 'label' => '🎨 Color de marca',  'hint' => 'Botones · CTA'],
@@ -372,13 +346,12 @@
                     <div class="mb-3">
                         <div class="flex items-center justify-between mb-1.5">
                             <span class="text-xs font-semibold text-slate-900">{{ $c['label'] }}</span>
-                            <span class="text-[10px]" style="color:#94a3b8">{{ $c['hint'] }}</span>
+                            <span class="text-xs text-gray-500">{{ $c['hint'] }}</span>
                         </div>
 
                         {{-- Picker trigger --}}
                         <button @click="activePicker = activePicker === '{{ $c['alpine'] }}' ? null : '{{ $c['alpine'] }}'"
-                                class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all"
-                                style="background:white; border:1px solid #e2e8f0">
+                                class="w-full flex justify-between items-center py-2.5 px-3 rounded-lg border border-gray-200 bg-white text-sm text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                             <div class="size-7 rounded-md flex-shrink-0"
                                  style="background:{{ ${'color'.ucfirst($c['alpine'])} }}; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.1)"></div>
                             <span class="font-mono text-xs text-slate-900 flex-1 text-left">{{ strtoupper(${'color'.ucfirst($c['alpine'])}) }}</span>
@@ -408,19 +381,18 @@
                             <input type="text"
                                    value="{{ ${'color'.ucfirst($c['alpine'])} }}"
                                    @change="if(/^#[0-9a-fA-F]{6}$/.test($event.target.value)) $wire.set('{{ $c['prop'] }}', $event.target.value)"
-                                   class="font-mono text-[10px] px-2 py-1 rounded-lg text-slate-900 focus:outline-none"
-                                   style="width:76px; background:white; border:1px solid #e2e8f0"
+                                   class="font-mono text-xs py-1.5 px-2 w-20 border-gray-200 rounded-lg text-gray-800 focus:border-blue-500 focus:ring-blue-500 transition-colors"
                                    maxlength="7" placeholder="#000000">
                         </div>
                     </div>
                     @endforeach
                 </div>
 
-                <div class="h-px" style="background:#e2e8f0"></div>
+                <div class="h-px my-5 bg-gray-200"></div>
 
                 {{-- Tipografía --}}
                 <div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest mb-2" style="color:#64748b">Tipografía</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Tipografía</p>
                     <div class="grid grid-cols-2 gap-1.5">
                         @foreach([
                             ['key' => 'instrument', 'name' => 'Instrument', 'sample' => 'Elegante'],
@@ -434,17 +406,17 @@
                                        background:{{ $fontFamily === $font['key'] ? 'rgba(79,70,229,0.05)' : 'transparent' }}">
                             <p class="text-sm font-bold leading-none mb-0.5"
                                style="color:{{ $fontFamily === $font['key'] ? '#9d93ff' : '#475569' }}">{{ $font['name'] }}</p>
-                            <p class="text-[9px]" style="color:#94a3b8">{{ $font['sample'] }}</p>
+                            <p class="text-[9px]" class="text-gray-400">{{ $font['sample'] }}</p>
                         </button>
                         @endforeach
                     </div>
                 </div>
 
-                <div class="h-px" style="background:#e2e8f0"></div>
+                <div class="h-px my-5 bg-gray-200"></div>
 
                 {{-- Fondo --}}
                 <div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest mb-2" style="color:#64748b">Estilo de fondo</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Estilo de fondo</p>
                     <div class="grid grid-cols-3 gap-1.5">
                         @foreach(['light' => ['☀️','Claro'], 'soft' => ['🌤️','Suave'], 'dark' => ['🌙','Oscuro']] as $key => [$icon, $label])
                         <button wire:click="$set('bgMode', '{{ $key }}')"
@@ -458,11 +430,11 @@
                     </div>
                 </div>
 
-                <div class="h-px" style="background:#e2e8f0"></div>
+                <div class="h-px my-5 bg-gray-200"></div>
 
                 {{-- Paletas rápidas --}}
                 <div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest mb-2" style="color:#64748b">Paletas listas</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Paletas listas</p>
                     <div class="grid grid-cols-2 gap-1.5" x-data>
                         <template x-for="p in quickPalettes" :key="p.name">
                             <button @click="$wire.applyPalette(p.primary, p.neutral, p.accent)"
@@ -478,7 +450,7 @@
                                 </div>
                                 <div>
                                     <p class="text-[11px] font-bold text-slate-900" x-text="p.name"></p>
-                                    <p class="text-[10px]" style="color:#94a3b8" x-text="p.vibe"></p>
+                                    <p class="text-xs text-gray-500" x-text="p.vibe"></p>
                                 </div>
                             </button>
                         </template>
@@ -491,16 +463,16 @@
         </div>{{-- /scrollable --}}
 
         {{-- Footer --}}
-        <div class="flex gap-2 p-4 flex-shrink-0" style="border-top:1px solid #e2e8f0; background:white">
+        <div class="flex gap-2 p-4 flex-shrink-0 bg-white border-t border-gray-200">
             <button wire:click="$set('colorPrimary', collect(['#6366f1','#0ea5e9','#22c55e','#db2777','#7c3aed','#dc2626'])->random())"
-                    class="flex items-center justify-center p-2.5 rounded-xl transition-all"
-                    style="border:1px solid #e2e8f0; color:#64748b; background:transparent"
+                    class="py-3 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none transition-colors"
                     title="Paleta aleatoria">
                 <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
             </button>
             <button wire:click="saveAll" wire:loading.attr="disabled"
-                    class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 disabled:opacity-50"
-                    style="background:{{ $colorPrimary }}; box-shadow:0 4px 16px {{ $colorPrimary }}40">
+                    class="py-3 px-4 w-full inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-white focus:outline-none disabled:opacity-50 disabled:pointer-events-none transition-all"
+                    style="background-color:{{ $colorPrimary }}; box-shadow:0 4px 14px {{ $colorPrimary }}40"
+                    onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                 <span wire:loading.remove wire:target="saveAll">
                     <svg class="size-3.5 inline mr-1" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
                     Guardar cambios
@@ -520,7 +492,7 @@
              style="background:white; border-bottom:1px solid #e2e8f0">
 
             {{-- Viewport --}}
-            <div class="flex p-1 gap-0.5 rounded-xl" style="background:#f1f5f9; border:1px solid #e2e8f0">
+            <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1">
                 @foreach(['desktop' => 'Escritorio', 'tablet' => 'Tablet', 'mobile' => 'Móvil'] as $vp => $label)
                 <button wire:click="$set('viewport', '{{ $vp }}')"
                         class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
@@ -532,7 +504,7 @@
                 @endforeach
             </div>
 
-            <div class="text-xs" style="color:#94a3b8">
+            <div class="text-xs" class="text-gray-400">
                 {{ collect($this->availableTemplates)->firstWhere('key', $templateKey)['name'] ?? $templateKey }}
                 <span style="color:rgba(0,0,0,0.1)">·</span>
                 <span class="font-semibold" style="color:#475569">
@@ -591,16 +563,18 @@
 {{-- ╔══════════════════════════════════════════╗
      ║  EDIT PANEL (slide-in derecha)           ║
      ╚══════════════════════════════════════════╝ --}}
-<div class="fixed top-14 right-0 bottom-0 w-80 flex flex-col z-40 transition-transform duration-300 {{ $editPanelOpen ? 'translate-x-0' : 'translate-x-full' }}"
-     style="background:white; border-left:1px solid rgba(255,255,255,0.1); box-shadow:-8px 0 32px rgba(0,0,0,0.1)">
+
+<div class="fixed inset-y-0 right-0 w-80 flex flex-col z-50 transition-transform duration-300 {{ $editPanelOpen ? 'translate-x-0' : 'translate-x-full' }} overflow-y-auto"
+     style="background:white; border-left:1px solid rgba(0,0,0,0.1); box-shadow:-8px 0 32px rgba(0,0,0,0.1)">
+
 
     {{-- Header --}}
-    <div class="flex items-center justify-between px-4 py-3 flex-shrink-0" style="border-bottom:1px solid #e2e8f0">
-        <p class="text-sm font-bold text-slate-900">
+    <div class="flex justify-between items-center py-3 px-4 border-b border-gray-200">
+        <p class="font-bold text-gray-800">
             @if($this->editingBlock){{ $this->editingBlock->getEmoji() }} {{ $this->editingBlock->getLabel() }}@endif
         </p>
         <button wire:click="closeEditPanel" class="size-7 flex items-center justify-center rounded-lg transition-all"
-                style="color:#94a3b8"
+                class="text-gray-400"
                 onmouseover="this.style.color='#0f172a'; this.style.background='#e2e8f0'"
                 onmouseout="this.style.color='#94a3b8'; this.style.background='transparent'">
             <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
