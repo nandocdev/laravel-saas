@@ -1,4 +1,4 @@
-<section class="py-16 bg-bgPage text-center border-t border-borderColor relative overflow-hidden" id="confianza">
+<section class="py-16 bg-bgPage text-center border-t border-borderColor relative overflow-hidden" id="trust">
     <div class="max-w-7xl mx-auto px-6">
         <h2 class="text-sm font-bold tracking-widest text-textSecondary uppercase mb-10">
             {{ $block->setting('title', 'Empresas que confían en nosotros') }}

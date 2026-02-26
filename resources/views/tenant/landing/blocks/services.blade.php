@@ -1,4 +1,4 @@
-<section class="py-24 px-6 md:px-12 lg:px-24 bg-bgSection relative border-y border-borderColor">
+<section id="services" class="py-24 px-6 md:px-12 lg:px-24 bg-bgSection relative border-y border-borderColor">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">

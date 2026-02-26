@@ -1,4 +1,4 @@
-<section class="py-24 px-6 md:px-12 lg:px-24 bg-bgPage relative border-t border-borderColor" id="contacto">
+<section class="py-24 px-6 md:px-12 lg:px-24 bg-bgPage relative border-t border-borderColor" id="contact">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-start">
         <div class="md:w-1/2 space-y-8">
             <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-textPrimary">

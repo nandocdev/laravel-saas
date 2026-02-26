@@ -1,4 +1,4 @@
-<section class="py-24 px-6 md:px-12 lg:px-24 bg-primary text-white relative overflow-hidden" id="logros">
+<section class="py-24 px-6 md:px-12 lg:px-24 bg-primary text-white relative overflow-hidden" id="achievements">
     {{-- Grid background pattern --}}
     <div class="absolute inset-0 bg-white/5 bg-[radial-gradient(var(--tw-gradient-from)_1px,transparent_1px)] [background-size:32px_32px]"></div>
 

@@ -1,4 +1,4 @@
-<section class="py-24 px-6 md:px-12 lg:px-24 bg-bgPage relative">
+<section id="gallery" class="py-24 px-6 md:px-12 lg:px-24 bg-bgPage relative">
     @if($block->setting('title'))
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">{{ $block->setting('title') }}</h2>

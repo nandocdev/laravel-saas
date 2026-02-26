@@ -1,9 +1,9 @@
-<section class="py-24 px-6 md:px-12 lg:px-24 bg-bgSection relative border-t border-borderColor" id="precios">
+<section class="py-24 px-6 md:px-12 lg:px-24 bg-bgSection relative border-t border-borderColor" id="pricing">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 text-textPrimary">Planes simples, <span class="text-primary italic">resultados reales</span></h2>
+            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 text-textPrimary">{{ $block->setting('title', 'Planes simples, resultados reales') }}</h2>
             <div class="h-1 w-20 bg-primary mx-auto rounded-full mb-6"></div>
-            <p class="text-xl text-textSecondary max-w-2xl mx-auto">Elige el plan que mejor se adapte a tus necesidades. Sin sorpresas, cambia o cancela cuando quieras.</p>
+            <p class="text-xl text-textSecondary max-w-2xl mx-auto">{{ $block->setting('subtitle', 'Elige el plan que mejor se adapte a tus necesidades. Sin sorpresas, cambia o cancela cuando quieras.') }}</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">

@@ -84,7 +84,8 @@
         [x-cloak] { display: none !important; }
     </style>
 
-    {{-- Alpine.js --}}
+    {{-- Alpine.js + plugin collapse para menú móvil --}}
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
@@ -134,7 +135,7 @@
 
                 {{-- Hamburger móvil --}}
                 <div class="-mr-2 flex md:hidden">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="bg-cardBg rounded-md p-2 inline-flex items-center justify-center text-textSecondary hover:text-primary hover:bg-sectionBg focus:outline-none">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="bg-bgCard rounded-md p-2 inline-flex items-center justify-center text-textSecondary hover:text-primary hover:bg-bgSection focus:outline-none">
                         <span class="sr-only">Abrir menú</span>
                         <svg class="h-6 w-6" x-show="!mobileMenuOpen" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                         <svg class="h-6 w-6" x-show="mobileMenuOpen" x-cloak fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -147,7 +148,7 @@
         <div x-show="mobileMenuOpen" x-collapse class="md:hidden bg-navBg border-b border-borderColor shadow-lg absolute w-full left-0">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 @foreach($navItems as $item)
-                    <a href="{{ $item['anchor'] }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-textSecondary hover:text-primary hover:bg-sectionBg">
+                    <a href="{{ $item['anchor'] }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-textSecondary hover:text-primary hover:bg-bgSection">
                         {{ $item['label'] }}
                     </a>
                 @endforeach
@@ -171,7 +172,20 @@
             </div>
         @else
             @foreach($blocks as $block)
+                @php
+                    $legacyAnchors = [
+                        'achievements' => 'logros',
+                        'catalog' => 'catalogo',
+                        'contact' => 'contacto',
+                        'pricing' => 'precios',
+                        'story' => 'historia',
+                        'trust' => 'confianza',
+                    ];
+                @endphp
                 {{-- ID para anclas de navegación --}}
+                @if(isset($legacyAnchors[$block->block_type]))
+                    <span id="{{ $legacyAnchors[$block->block_type] }}" class="block relative -top-24"></span>
+                @endif
                 <div id="{{ $block->block_type }}" class="relative scroll-mt-20">
                     {{-- 
                         Aquí requerimos la vista pública de cada bloque.

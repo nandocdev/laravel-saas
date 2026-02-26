@@ -1,4 +1,4 @@
-<section class="py-24 px-6 md:px-12 lg:px-24 bg-gradient-to-br from-primary/10 via-bgPage to-accent/5 relative overflow-hidden">
+<section id="hero" class="py-24 px-6 md:px-12 lg:px-24 bg-gradient-to-br from-primary/10 via-bgPage to-accent/5 relative overflow-hidden">
     {{-- Grid background pattern --}}
     <div class="absolute inset-0 bg-[radial-gradient(var(--tw-gradient-from)_1px,transparent_1px)] [background-size:32px_32px] opacity-30"></div>
     

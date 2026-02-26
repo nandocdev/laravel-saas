@@ -1,4 +1,4 @@
-<section class="py-24 px-6 md:px-12 lg:px-24 bg-bgSection relative border-y border-borderColor" id="catalogo">
+<section class="py-24 px-6 md:px-12 lg:px-24 bg-bgSection relative border-y border-borderColor" id="catalog">
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div>
