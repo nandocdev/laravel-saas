@@ -1,11 +1,8 @@
-@props(['blocks', 'logo' => null])
+@props(['sections' => [], 'style' => [], 'config' => []])
 
 <div class="landing-template-catalog bg-gray-50 text-gray-900">
     {{-- Marketplace / Catalog: Oriented to grid products. --}}
-    @foreach($blocks as $block)
-        <x-dynamic-component 
-            :component="'blocks.' . $block['type']" 
-            :data="$block['data'] ?? []" 
-        />
+    @foreach ($sections as $section)
+        <x-dynamic-component :component="$section['component']" :data="$section['content'] ?? []" :style="$style" />
     @endforeach
 </div>

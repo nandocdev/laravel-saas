@@ -2,155 +2,143 @@
 
 namespace App\Livewire\Tenant\Settings;
 
+use App\Tenant\Services\LandingConfigService;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
 
-class LandingSettings extends Component
-{
+class LandingSettings extends Component {
     use WithFileUploads;
+
+    protected LandingConfigService $landingConfigService;
 
     public $company_name;
     public $logo;
     public $existing_logo;
 
-    public $primary_color = '#3b82f6';
-    public $neutral_color = '#6b7280';
-    public $accent_color = '#ec4899';
+    public $primary_color = '#644FB5';
+    public $secondary_color = '#F5A623';
+    public $font = 'Roboto';
+    public $custom_css = '';
 
     public array $blocks = [];
     public $newBlockType = '';
 
     public $template = 'corporate';
 
+    public array $draftConfig = [];
+    public array $persistedConfig = [];
 
-    public function mount()
-    {
+    public function boot(LandingConfigService $landingConfigService): void {
+        $this->landingConfigService = $landingConfigService;
+    }
+
+
+    public function mount() {
         $tenant = tenant();
         $this->company_name = $tenant->company_name ?? $tenant->id;
 
-        $config = $tenant->landing_page_config;
-        $this->template = $config['template'] ?? 'corporate';
-        $this->existing_logo = $config['logo'] ?? null;
-
-        $this->primary_color = $config['colors']['primary'] ?? '#3b82f6';
-        $this->neutral_color = $config['colors']['neutral'] ?? '#6b7280';
-        $this->accent_color = $config['colors']['accent'] ?? '#ec4899';
-
-        if (is_array($config) && isset($config['blocks'])) {
-            foreach ($config['blocks'] as $block) {
-                $this->blocks[] = [
-                    'id' => uniqid(),
-                    'type' => $block['type'],
-                    'data' => $block['data'] ?? [],
-                ];
-            }
-        } else {
-            // Fallback for first time or old flat fields
-            $this->blocks[] = [
-                'id' => uniqid(),
-                'type' => 'hero',
-                'data' => [
-                    'title' => $tenant->landing_headline ?? $tenant->company_name ?? 'Welcome',
-                    'subtitle' => $tenant->landing_description ?? 'The best solutions for your business.',
-                    'cta_text' => $tenant->landing_cta ?? 'Contact Us',
-                    'cta_link' => '#contact',
-                ],
-            ];
-        }
+        $this->persistedConfig = $this->landingConfigService->resolveForTenant($tenant);
+        $this->draftConfig = $this->persistedConfig;
+        $this->hydrateEditorState($this->landingConfigService->toEditorState($this->draftConfig));
     }
 
-    public function addBlock()
-    {
-        if (empty($this->newBlockType)) return;
 
-        $defaultData = match ($this->newBlockType) {
-            'hero' => ['title' => 'New Hero', 'subtitle' => 'Description here', 'cta_text' => 'Click Here', 'cta_link' => '#'],
-            'features' => ['items' => [['title' => 'Feature 1', 'description' => '...']]],
-            'testimonials' => ['heading' => 'Testimonials', 'items' => [['name' => 'John Doe', 'role' => 'CEO', 'quote' => 'Great!']]],
-            'pricing' => ['heading' => 'Pricing', 'items' => [['name' => 'Basic', 'price' => '10', 'popular' => false, 'features' => ['A', 'B'], 'cta_text' => 'Choose Plan', 'cta_link' => '#']]],
-            'faq' => ['heading' => 'FAQ', 'items' => [['question' => 'What is this?', 'answer' => 'An answer']]],
-            'contact' => ['heading' => 'Contact Us', 'description' => 'Drop us a line.', 'email' => 'hello@example.com', 'phone' => '', 'address' => ''],
-            default => []
-        };
+    public function updated($name): void {
+        if (
+            str_starts_with($name, 'blocks.') ||
+            in_array($name, ['template', 'primary_color', 'secondary_color', 'font', 'custom_css'], true)
+        ) {
+            $this->syncDraftFromEditorState();
+        }
+    }
+    public function addBlock($type = null) {
+        $type = $type ?? $this->newBlockType;
+        if (empty($type)) {
+            return;
+        }
+
+        $defaultData = $this->landingConfigService->defaultSectionContent((string) $type);
 
         $this->blocks[] = [
-            'id' => uniqid(),
-            'type' => $this->newBlockType,
+            'id' => uniqid('section_', true),
+            'type' => $type,
+            'visible' => true,
             'data' => $defaultData,
         ];
 
         $this->newBlockType = '';
+        $this->syncDraftFromEditorState();
     }
 
-    public function removeBlock($index)
-    {
+    public function removeBlock($index) {
         unset($this->blocks[$index]);
         $this->blocks = array_values($this->blocks); // Re-index array
+        $this->syncDraftFromEditorState();
     }
 
-    public function moveBlockUp($index)
-    {
+    public function moveBlockUp($index) {
         if ($index > 0) {
             $temp = $this->blocks[$index];
             $this->blocks[$index] = $this->blocks[$index - 1];
             $this->blocks[$index - 1] = $temp;
         }
+
+        $this->syncDraftFromEditorState();
     }
 
-    public function moveBlockDown($index)
-    {
+    public function moveBlockDown($index) {
         if ($index < count($this->blocks) - 1) {
             $temp = $this->blocks[$index];
             $this->blocks[$index] = $this->blocks[$index + 1];
             $this->blocks[$index + 1] = $temp;
         }
+
+        $this->syncDraftFromEditorState();
     }
 
-    // Array manipulation helpers for inner repeater items (features, testimonials, etc)
-    public function addRepeaterItem($blockIndex, $key, $defaultItem)
-    {
+    public function toggleBlockVisibility($index) {
+        $this->blocks[$index]['visible'] = !($this->blocks[$index]['visible'] ?? true);
+        $this->syncDraftFromEditorState();
+    }
+
+    public function addRepeaterItem($blockIndex, $key, $defaultItem) {
         if (!isset($this->blocks[$blockIndex]['data'][$key])) {
             $this->blocks[$blockIndex]['data'][$key] = [];
         }
         $this->blocks[$blockIndex]['data'][$key][] = $defaultItem;
+        $this->syncDraftFromEditorState();
     }
 
-    public function removeRepeaterItem($blockIndex, $key, $itemIndex)
-    {
+    public function removeRepeaterItem($blockIndex, $key, $itemIndex) {
         unset($this->blocks[$blockIndex]['data'][$key][$itemIndex]);
         $this->blocks[$blockIndex]['data'][$key] = array_values($this->blocks[$blockIndex]['data'][$key]);
+        $this->syncDraftFromEditorState();
     }
 
-    public function addPricingFeature($blockIndex, $pricingItemIndex)
-    {
+    public function addPricingFeature($blockIndex, $pricingItemIndex) {
         if (!isset($this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'])) {
             $this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'] = [];
         }
         $this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'][] = 'New Feature';
+        $this->syncDraftFromEditorState();
     }
 
-    public function removePricingFeature($blockIndex, $pricingItemIndex, $featureIndex)
-    {
+    public function removePricingFeature($blockIndex, $pricingItemIndex, $featureIndex) {
         unset($this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'][$featureIndex]);
         $this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features'] = array_values($this->blocks[$blockIndex]['data']['items'][$pricingItemIndex]['features']);
+        $this->syncDraftFromEditorState();
     }
 
-    public function save()
-    {
+    public function save() {
         $this->validate([
             'company_name' => 'required|string|max:255',
-            'template' => 'required|string|in:corporate,visual,conversion,storytelling,catalog,onepage',
+            'template' => ['required', 'string', Rule::in($this->landingConfigService->availableTemplateKeys())],
             'blocks' => 'array',
         ]);
 
-        $parsedBlocks = [];
-        foreach ($this->blocks as $block) {
-            $parsedBlocks[] = [
-                'type' => $block['type'],
-                'data' => $block['data'] ?? [],
-            ];
-        }
+        $this->syncDraftFromEditorState();
 
         $tenant = tenant();
 
@@ -159,26 +147,45 @@ class LandingSettings extends Component
             $logoPath = $this->logo->store('logos', 'public');
         }
 
+        $configToPersist = $this->draftConfig;
+        data_set($configToPersist, 'assets.logo', $logoPath);
+
         $tenant->update([
             'company_name' => $this->company_name,
-            'landing_page_config' => [
-                'template' => $this->template,
-                'logo' => $logoPath,
-                'colors' => [
-                    'primary' => $this->primary_color,
-                    'neutral' => $this->neutral_color,
-                    'accent' => $this->accent_color,
-                ],
-                'blocks' => $parsedBlocks
-            ],
+            'landing_page_config' => $configToPersist,
         ]);
+
+        $this->persistedConfig = $configToPersist;
+        $this->draftConfig = $configToPersist;
+        $this->existing_logo = $logoPath;
 
         session()->flash('message', 'Landing page settings updated successfully.');
     }
 
+    private function hydrateEditorState(array $state): void {
+        $this->template = $state['template'];
+        $this->primary_color = $state['primary_color'];
+        $this->secondary_color = $state['secondary_color'];
+        $this->font = $state['font'];
+        $this->custom_css = $state['custom_css'];
+        $this->existing_logo = $state['existing_logo'];
+        $this->blocks = $state['blocks'];
+    }
+
+    private function syncDraftFromEditorState(): void {
+        $this->draftConfig = $this->landingConfigService->fromEditorState([
+            'template' => $this->template,
+            'primary_color' => $this->primary_color,
+            'secondary_color' => $this->secondary_color,
+            'font' => $this->font,
+            'custom_css' => $this->custom_css,
+            'existing_logo' => $this->existing_logo,
+            'blocks' => $this->blocks,
+        ]);
+    }
+
     #[Layout('layouts.tenant', ['title' => 'Landing Settings'])]
-    public function render()
-    {
+    public function render() {
         return view('livewire.tenant.settings.landing-settings');
     }
 }

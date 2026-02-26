@@ -1,21 +1,23 @@
 @php
-    $templateName = $config['template'] ?? 'corporate';
-    $colors = $config['colors'] ?? [
-        'primary' => '#3b82f6',
-        'neutral' => '#6b7280',
-        'accent' => '#ec4899',
-    ];
-    $logo = $config['logo'] ?? null;
+    $primary = $style['primary'] ?? '#644FB5';
+    $neutral = $style['neutral'] ?? '#F8FAFC';
+    $accent = $style['accent'] ?? '#F5A623';
+    $font = $style['font'] ?? 'Roboto';
+    $logo = data_get($config, 'assets.logo');
 @endphp
 
-<div class="landing-template-wrapper w-full" style="
-    --brand-primary: {{ $colors['primary'] }};
-    --brand-neutral: {{ $colors['neutral'] }};
-    --brand-accent: {{ $colors['accent'] }};
+<div class="landing-template-wrapper w-full"
+    style="
+    --brand-primary: {{ $primary }};
+    --brand-neutral: {{ $neutral }};
+    --brand-accent: {{ $accent }};
+    font-family: {{ $font }}, sans-serif;
 ">
-    <x-dynamic-component 
-        :component="'templates.' . $templateName" 
-        :blocks="$blocks"
-        :logo="$logo"
-    />
+    @if ($logo)
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex justify-between items-center">
+            <img src="{{ asset('storage/' . $logo) }}" class="h-10 object-contain" alt="Company logo">
+        </div>
+    @endif
+
+    <x-dynamic-component :component="$templateView" :sections="$sections" :style="$style" :config="$config" />
 </div>
