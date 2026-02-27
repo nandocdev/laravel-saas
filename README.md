@@ -11,6 +11,7 @@ A powerful, production-ready B2B SaaS starter kit built on top of Laravel 12, Li
 - **Admin Cloning**: The founding central user is seamlessly cloned into the isolated tenant database as the initial Administrator.
 - **Modern TALL Stack**: Built with Laravel 12, Livewire 3, Alpine.js, and Tailwind CSS 4.
 - **Beautiful UI Components**: Styled with Preline UI and Flux UI for a premium, accessible, and responsive interface.
+- **Visual Landing Builder**: High-performance drag-and-drop builder for tenant landing pages, featuring real-time previews, multiple templates, and custom styling.
 - **Authentication**: Powered by Laravel Fortify with a custom Blade integration.
 - **Centralized Subscriptions**: Ready-to-go plan and subscription models handled at the central database level.
 
@@ -81,7 +82,14 @@ A powerful, production-ready B2B SaaS starter kit built on top of Laravel 12, Li
    php artisan migrate
    ```
 
-7. **Local Host Routing:**
+8. **Link Storage:**
+   Required for image uploads in the Landing Builder.
+
+   ```bash
+   php artisan storage:link
+   ```
+
+9. **Local Host Routing:**
    To test multi-tenancy locally, you'll need to use `localhost` or a `.test` domain instead of the raw IP `127.0.0.1` so your browser correctly resolves subdomains (e.g. `acme.localhost`).
    Start the Laravel local server:
 
