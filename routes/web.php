@@ -12,6 +12,6 @@ foreach (config('tenancy.central_domains', []) as $domain) {
             ->middleware(['auth', 'verified'])
             ->name('dashboard');
 
-        require __DIR__ . '/settings.php';
+        require __DIR__.'/settings.php';
     });
 }

@@ -106,8 +106,7 @@ class TenancyServiceProvider extends ServiceProvider
 
         Event::listen(Events\TenancyInitialized::class, function () {
             config([
-                'filesystems.disks.tenant.root' =>
-                storage_path('app/tenants/' . tenant('id'))
+                'filesystems.disks.tenant.root' => storage_path('app/tenants/'.tenant('id')),
             ]);
         });
     }

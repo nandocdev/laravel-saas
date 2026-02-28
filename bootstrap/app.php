@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'universal' => \App\Http\Middleware\ScopeSessions::class,
+        ]);
+
         $middleware->redirectGuestsTo(function (\Illuminate\Http\Request $request) {
             if (function_exists('tenancy') && tenancy()->initialized) {
                 return route('tenant.login');

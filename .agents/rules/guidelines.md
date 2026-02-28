@@ -4,7 +4,6 @@ description: Coding Guidelines
 
 # 📘 Coding Guidelines
 
----
 
 # 1. Arquitectura de Monolito Modular
 
